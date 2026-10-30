@@ -299,3 +299,29 @@ test("a documented review blocker becomes an actionable release step rather than
     ),
   );
 });
+
+test("a token exchange alone does not satisfy the authenticated API test step", async () => {
+  const guide = await research(
+    "Provider",
+    "read-only profiles",
+    () => {},
+    dependencies({
+      generate: async () => ({
+        ...draft(),
+        steps: [
+          {
+            ...draft().steps[0],
+            title: "Exchange authorization code",
+            detail: "Exchange the code for a user access token.",
+            done: "A token is returned.",
+          },
+        ],
+      }),
+    }),
+  );
+  const check = guide.steps.find((step) => step.id === "verify-api-access");
+  assert.ok(check);
+  assert.equal(check.owner, "Developer");
+  assert.match(check.condition, /eligibility/);
+  assert.match(check.detail, /token exchange alone/);
+});

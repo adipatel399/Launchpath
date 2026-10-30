@@ -45,7 +45,7 @@ npm run build
 npm start
 ```
 
-The current suite has 44 passing checks. A real GitHub managed connection was also tested with account consent. Composio reported ACTIVE, and an authenticated `GET /user` returned HTTP 200.
+The current suite has 45 passing checks. A real GitHub managed connection was also tested with account consent. Composio reported ACTIVE, and an authenticated `GET /user` returned HTTP 200.
 
 ## Why I chose this approach
 

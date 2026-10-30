@@ -47,3 +47,5 @@ No custom provider app registration, provider review submission, security assess
 A new investigation on the deployed application identified `file_content:read` and Figma’s review requirement for public OAuth apps. The evidence was retained from [Figma’s OAuth app documentation](https://developers.figma.com/docs/rest-api/oauth-apps/).
 
 A fallback release step initially treated the process as wholly unknown even though the blocker described a required review. The fallback was corrected to carry that documented requirement into the next action and leave only remaining details and timing open.
+
+The checked Figma guide also separates draft testing by the creator and eligible plan admins from authorization by external customers after approval. Its read test uses a file the account can access. A token exchange by itself does not complete that test.

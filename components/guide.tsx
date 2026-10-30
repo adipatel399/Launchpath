@@ -815,8 +815,9 @@ export default function GuideView({ guide: g }: { guide: Guide }) {
             </h4>
             <p className="excerpt">{source.excerpt}</p>
             <p className="subtle-note">
-              A paraphrased summary, not a verbatim quotation or proof of an
-              executed setup.
+              {g.generated
+                ? "A retrieved page passage. It supports inspection of the source, not proof that setup was executed."
+                : "A paraphrased source summary, not proof of an executed setup."}
             </p>
             <h4>Retrieval method</h4>
             <p>

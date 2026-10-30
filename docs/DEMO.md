@@ -1,5 +1,7 @@
 # Demo
 
+Open <https://launchpath-adipatel399.onrender.com>. The checked [Figma example](https://launchpath-adipatel399.onrender.com/guide/research-f0afbb4b-c19f-4d3d-a97b-d1438c26ac43) shows a live investigation followed by source checking.
+
 ## Start with an existing app
 
 1. Open the app library and search for Gmail.

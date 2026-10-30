@@ -2,7 +2,7 @@
 
 ## Automated checks
 
-The latest run passed 44 tests. TypeScript validation and the production build also passed.
+The latest run passed 45 tests. TypeScript validation and the production build also passed.
 
 The suite covers guide citation references, scenario changes, stored guides, permission evidence, model failures, cancelled research, private address blocking, request size limits, private setup ownership and logo retrieval.
 
@@ -41,3 +41,7 @@ A new Figma investigation ran through the deployed browser interface, selected `
 A real database write was followed by a successful read from a separate process. The deployed private setup API created a Slack worksheet, manifest and runbook. The owner session received HTTP 200 for its workspace; a request without that cookie received HTTP 404.
 
 The Figma test exposed a fallback that described review as wholly unresolved despite a documented blocker. The fallback now uses that blocker to create the next review action. A regression test covers this case.
+
+The saved Figma share link remained readable after a successful Render redeployment. The final code also checks that a token exchange is not the only connection test in a generated runbook.
+
+A manual source check clarified Figma draft test eligibility, moved development testing before public submission, and added an explicit file read check. Those are documented future developer actions. No authenticated Figma setup is claimed.
