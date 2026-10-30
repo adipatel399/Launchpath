@@ -34,7 +34,7 @@ If `.env.local` already exists, keep it. Do not overwrite working keys.
 
 The reviewed guides, exports and public website checks work without model keys. For live research, add `GEMINI_API_KEY` and `TAVILY_API_KEY`. Keys can be created through [Google AI Studio](https://aistudio.google.com/apikey) and [Tavily](https://app.tavily.com). Available free usage depends on the account and its quota.
 
-Add `COMPOSIO_API_KEY` from a test project to try a real managed connection. This key is separate from the research keys. Keep all keys on the server and out of research inputs.
+Add `COMPOSIO_API_KEY` from a test project to try a real managed connection. This key is separate from the research keys. Keep all keys on the server and out of research inputs. The hosted demo uses the operator’s Composio test project. Run locally with your own project key if you want connections in your own project.
 
 ## Check the project
 

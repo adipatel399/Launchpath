@@ -365,10 +365,11 @@ export default function SetupView({ guide: g }: { guide: Guide }) {
                         </code>
                       </p>
                       <p>
-                        Review the actual permissions on the provider’s consent
-                        screen. Cancel if they differ from your intent. Composio
-                        stores provider tokens; LaunchPath does not receive your
-                        password or expose tokens.
+                        The server’s configured Composio project receives this
+                        test connection. Review the actual permissions on the
+                        provider’s consent screen. Cancel if they differ from
+                        your intent. Composio stores provider tokens; LaunchPath
+                        does not receive your password or expose tokens.
                       </p>
                     </div>
                     <label className="consent-checkbox">
@@ -378,8 +379,8 @@ export default function SetupView({ guide: g }: { guide: Guide }) {
                         onChange={(e) => setConfirmed(e.target.checked)}
                       />
                       I want to create a managed auth configuration and
-                      authorization link in my Composio test project for the
-                      scope shown above.
+                      authorization link in the configured Composio test project
+                      for the scope shown above.
                     </label>
                     <button
                       className="button primary"
