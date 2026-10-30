@@ -1,6 +1,6 @@
 # Deployment
 
-The demo is deployed at <https://launchpath-adipatel399.onrender.com>. Source is at <https://github.com/adipatel399/Launchpath>.
+The demo is deployed at <https://launchpath-lpry.onrender.com>. Source is at <https://github.com/adipatel399/Launchpath>.
 
 The web service and Postgres database both use Render’s free plans. The database expires on 29 November 2026. No paid plan was enabled. Upgrade or move the database before that date to keep the saved guides available.
 

@@ -1,6 +1,6 @@
 # LaunchPath
 
-[Live demo](https://launchpath-adipatel399.onrender.com) · [Source](https://github.com/adipatel399/Launchpath)
+[Live demo](https://launchpath-lpry.onrender.com) · [Source](https://github.com/adipatel399/Launchpath)
 
 LaunchPath helps developers understand what it takes to set up an OAuth app and get it ready for users.
 
