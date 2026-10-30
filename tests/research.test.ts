@@ -266,3 +266,36 @@ test("second review cannot restore claims supported only by excluded secondary e
     ["s1"],
   );
 });
+
+test("a documented review blocker becomes an actionable release step rather than a claim that no process was found", async () => {
+  const guide = await research(
+    "Provider",
+    "read-only",
+    () => {},
+    dependencies({
+      generate: async () => ({
+        ...draft(),
+        blockers: [
+          {
+            title: "Public app review",
+            detail: "External apps require review.",
+            action: "Submit scope justification and a test walkthrough.",
+            owner: "Developer",
+            sourceIds: ["s1"],
+          },
+        ],
+      }),
+    }),
+  );
+  const release = guide.steps.find(
+    (step) => step.id === "confirm-release-requirements",
+  )!;
+  assert.equal(release.title, "Public app review");
+  assert.match(release.detail, /Submit scope justification/);
+  assert.doesNotMatch(release.detail, /did not establish/);
+  assert.ok(
+    !guide.unknowns.some((item) =>
+      item.includes("process was not established"),
+    ),
+  );
+});

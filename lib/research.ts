@@ -366,18 +366,28 @@ export async function research(
       ),
     )
   ) {
+    const releaseGate = result.blockers.find((blocker) =>
+      /review|approval|distribut|verification/i.test(blocker.title),
+    );
     result.steps.push({
       id: "confirm-release-requirements",
-      title: "Resolve wider-release requirements",
-      detail:
-        "This investigation did not establish a provider review or distribution process for this exact use case. Check the current provider documentation and support channel before promising an external launch date; record any submission, policy or administrator requirements.",
+      title: releaseGate
+        ? releaseGate.title
+        : "Resolve wider-release requirements",
+      detail: releaseGate
+        ? `${releaseGate.detail} Next: ${releaseGate.action} Confirm the current submission details and review timing for your actual app before promising a launch date.`
+        : "This investigation did not establish a provider review or distribution process for this exact use case. Check the current provider documentation and support channel before promising an external launch date; record any submission, policy or administrator requirements.",
       owner: "Developer",
       done: "Applicable release requirements and remaining questions are documented; the provider confirms any approval decision.",
       condition: "Before wider release",
-      sourceIds: [result.steps[0].sourceIds[0]],
+      sourceIds: releaseGate
+        ? releaseGate.sourceIds
+        : [result.steps[0].sourceIds[0]],
     });
     result.unknowns.push(
-      "The applicable wider-release review/distribution process was not established by this investigation.",
+      releaseGate
+        ? "The remaining submission details and review timing need confirmation for the actual app."
+        : "The applicable wider-release review/distribution process was not established by this investigation.",
     );
   }
   if (/^(none|no wait|instant|immediate|0(?:\s|$))/i.test(result.wait.trim())) {
@@ -397,7 +407,7 @@ export async function research(
   ) {
     result.verdict =
       result.verdict.replace(/fully supported/gi, "documented") +
-      " Public review or distribution requirements remain unverified.";
+      " Some release details or timing still need confirmation.";
   }
   const cited = new Set(
     [...result.steps, ...result.scopes, ...result.blockers].flatMap(
@@ -424,7 +434,7 @@ export async function research(
   await (deps.save || saveGuide)(g);
   emit("activity", {
     title: "Guide saved",
-    detail: `${retainedSources.length} sources retained. Generated guidance still needs human review of consequential claims.`,
+    detail: `${retainedSources.length} ${retainedSources.length === 1 ? "source" : "sources"} retained. Generated guidance still needs human review of consequential claims.`,
   });
   emit("complete", { guide: g });
   return g;

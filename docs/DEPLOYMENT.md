@@ -1,10 +1,12 @@
 # Deployment
 
-A public demo has not been deployed yet. Local testing is not a substitute for the assignment’s working public link.
+The demo is deployed at <https://launchpath-adipatel399.onrender.com>. Source is at <https://github.com/adipatel399/Launchpath>.
+
+The web service and Postgres database both use Render’s free plans. The database expires on 29 November 2026. No paid plan was enabled. Upgrade or move the database before that date to keep the saved guides available.
 
 ## Requirements
 
-Use a Node host that supports long requests and a persistent writable directory. Research can take several minutes and streams progress events to the browser.
+Use a Node host that supports long requests and Postgres or persistent writable storage. Research can take several minutes and streams progress events to the browser.
 
 Run `npm ci`, `npm run build`, then start Next on the interface and port required by the host. The local `npm start` command binds to the loopback interface by default.
 

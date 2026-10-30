@@ -1,5 +1,7 @@
 # LaunchPath
 
+[Live demo](https://launchpath-adipatel399.onrender.com) · [Source](https://github.com/adipatel399/Launchpath)
+
 LaunchPath helps developers understand what it takes to set up an OAuth app and get it ready for users.
 
 Search for an app, open its guide, and see what to do next. If the app is missing, the research agent reads provider documentation and creates a guide that can be shared.
@@ -43,7 +45,7 @@ npm run build
 npm start
 ```
 
-The current suite has 43 passing checks. A real GitHub managed connection was also tested with account consent. Composio reported ACTIVE, and an authenticated `GET /user` returned HTTP 200.
+The current suite has 44 passing checks. A real GitHub managed connection was also tested with account consent. Composio reported ACTIVE, and an authenticated `GET /user` returned HTTP 200.
 
 ## Why I chose this approach
 
@@ -79,7 +81,9 @@ This version is intended for a local demonstration or a controlled reviewer depl
 
 ## Submission notes
 
-The public deployment is still pending hosting access. The local URL above is not a public demo link. Use a Node host with persistent writable storage for generated guides and private setup attempts. Set `APP_URL` to the deployed HTTPS origin.
+The demo runs on Render with Postgres storage. New guide links survive app restarts. The free web service can take about a minute to wake up after inactivity. The free database expires on 29 November 2026, so it must be upgraded or moved before then if the demo needs to remain available.
+
+For your own deployment, set `APP_URL` to its HTTPS origin and configure `DATABASE_URL` for persistence. The Dockerfile and startup migration are included.
 
 See [demo steps](docs/DEMO.md), [findings](docs/FINDINGS.md), [test results](docs/TESTING.md) and [deployment notes](docs/DEPLOYMENT.md).
 

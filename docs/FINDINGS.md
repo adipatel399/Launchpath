@@ -41,3 +41,9 @@ A table extraction problem joined adjacent cells and rejected valid evidence. Pr
 ## What remains unverified
 
 No custom provider app registration, provider review submission, security assessment or approval was completed. Real Slack and Gmail consent flows remain untested. Customer policies and provider waiting times cannot be established from one test account.
+
+## Figma on the public deployment
+
+A new investigation on the deployed application identified `file_content:read` and Figma’s review requirement for public OAuth apps. The evidence was retained from [Figma’s OAuth app documentation](https://developers.figma.com/docs/rest-api/oauth-apps/).
+
+A fallback release step initially treated the process as wholly unknown even though the blocker described a required review. The fallback was corrected to carry that documented requirement into the next action and leave only remaining details and timing open.

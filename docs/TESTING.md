@@ -2,7 +2,7 @@
 
 ## Automated checks
 
-The latest run passed 43 tests. TypeScript validation and the production build also passed.
+The latest run passed 44 tests. TypeScript validation and the production build also passed.
 
 The suite covers guide citation references, scenario changes, stored guides, permission evidence, model failures, cancelled research, private address blocking, request size limits, private setup ownership and logo retrieval.
 
@@ -31,3 +31,13 @@ Public guides can be read without a setup cookie. Private setup attempts return 
 ## Limits of these results
 
 These checks do not prove every generated statement correct, every provider flow complete, or a production deployment secure. Provider approval and real Slack or Gmail consent are not verified by the automated suite.
+
+## Hosted checks
+
+The Render container built and started successfully. The public homepage, guide API and research health endpoint returned HTTP 200.
+
+A new Figma investigation ran through the deployed browser interface, selected `file_content:read`, identified a public app review gate and saved a guide in Postgres.
+
+A real database write was followed by a successful read from a separate process. The deployed private setup API created a Slack worksheet, manifest and runbook. The owner session received HTTP 200 for its workspace; a request without that cookie received HTTP 404.
+
+The Figma test exposed a fallback that described review as wholly unresolved despite a documented blocker. The fallback now uses that blocker to create the next review action. A regression test covers this case.
