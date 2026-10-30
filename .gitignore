@@ -1,0 +1,21 @@
+node_modules/
+.next/
+.env*
+!.env.example
+.data/
+*.tsbuildinfo
+playwright-report/
+test-results/
+
+# Local working notes and generated editor instructions
+.local-notes/
+AGENTS.md
+PLAN.md
+# Intermediate interface captures
+docs/guide-*.png
+docs/launchpath-redesign.jpg
+
+# Keep only the final demonstration captures
+docs/*.png
+!docs/launchpath-focused-desktop.png
+!docs/github-oauth-result.png

@@ -1,0 +1,392 @@
+[
+  {
+    "id": "github",
+    "name": "GitHub",
+    "domain": "github.com",
+    "description": "A direct registration path, with an important app-type decision.",
+    "category": "Developer tools",
+    "color": "#24292f",
+    "monogram": "GH",
+    "verdict": "Start by choosing OAuth App or GitHub App. Registering an app and gaining access to customer resources are separate steps.",
+    "effort": "30–90 min",
+    "wait": "No general review duration established",
+    "estimateBasis": "Planning estimate for initial configuration only; excludes implementation and customer policy decisions.",
+    "managed": "Available",
+    "scopes": [
+      {
+        "name": "read:user",
+        "purpose": "Read profile information; confirm the endpoints your feature needs.",
+        "classification": "Endpoint-dependent",
+        "sourceIds": ["scope"]
+      }
+    ],
+    "steps": [
+      {
+        "id": "route",
+        "title": "Choose your OAuth identity",
+        "detail": "Use managed auth if its current permissions fit. For your own app, compare GitHub Apps: fine-grained permissions and installation control may suit repository access better.",
+        "owner": "Developer",
+        "done": "Record the selected app type and why it serves your feature.",
+        "sourceIds": ["register", "composio"],
+        "condition": "Always"
+      },
+      {
+        "id": "prepare",
+        "title": "Prepare registration details",
+        "detail": "Have a public application name, homepage and callback URL ready. If using Composio, copy the redirect URI from the custom auth configuration; do not guess it.",
+        "owner": "Developer",
+        "done": "The homepage and exact callback URL are recorded.",
+        "sourceIds": ["register", "composio"],
+        "condition": "Always"
+      },
+      {
+        "id": "register",
+        "title": "Register the OAuth app",
+        "detail": "Open GitHub Settings → Developer settings → OAuth apps → New OAuth App. Fill in the application details and callback URL. Keep generated secrets in your secret manager or Composio.",
+        "owner": "Developer",
+        "done": "A provider registration exists, with credentials kept outside this guide.",
+        "sourceIds": ["register"],
+        "condition": "Always"
+      },
+      {
+        "id": "permissions",
+        "title": "Request only the necessary scopes",
+        "detail": "Map your feature to specific API endpoints and their scopes. A repository integration may be better served by GitHub App permissions.",
+        "owner": "Agent",
+        "done": "Each requested permission has an endpoint and feature justification.",
+        "sourceIds": ["scope", "register"],
+        "condition": "Always"
+      },
+      {
+        "id": "test",
+        "title": "Authorize one test account",
+        "detail": "Complete the authorization flow in your own integration or Composio and make a harmless read request. Record only the status and redacted result. Account authorization is distinct from app registration.",
+        "owner": "Developer",
+        "done": "The intended test resource can be read with the granted permissions.",
+        "sourceIds": ["flow"],
+        "condition": "Always"
+      }
+    ],
+    "sources": [
+      {
+        "id": "composio",
+        "title": "Composio · managed vs custom auth",
+        "url": "https://docs.composio.dev/docs/authentication/custom-app-vs-managed-app",
+        "excerpt": "Composio manages OAuth apps for GitHub, Gmail and Slack. Custom credentials support your own consent identity and scope needs.",
+        "checkedAt": "2026-10-29"
+      },
+      {
+        "id": "register",
+        "title": "GitHub · creating an OAuth app",
+        "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app",
+        "excerpt": "The registration flow asks for an application name, homepage and callback URL. GitHub recommends considering a GitHub App.",
+        "checkedAt": "2026-10-29"
+      },
+      {
+        "id": "scope",
+        "title": "GitHub · OAuth scopes",
+        "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps",
+        "excerpt": "Scopes limit token access. Request only the permissions required for the endpoints your integration calls.",
+        "checkedAt": "2026-10-29"
+      },
+      {
+        "id": "flow",
+        "title": "GitHub · authorizing OAuth apps",
+        "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps",
+        "excerpt": "Web applications redirect users to authorize the app, then exchange the returned code for a token.",
+        "checkedAt": "2026-10-29"
+      }
+    ],
+    "blockers": [
+      {
+        "title": "The wrong app type for repository access",
+        "detail": "An OAuth App acts on behalf of a user. Compare the finer-grained permissions of GitHub Apps before committing to this model.",
+        "action": "List required repository actions and compare the documented app types.",
+        "owner": "Developer",
+        "sourceIds": ["register"]
+      },
+      {
+        "title": "Callback configuration does not match",
+        "detail": "Use the provider’s redirect rules and the callback supplied by the integration platform.",
+        "action": "Compare the registered callback with the actual authorization request; never paste a client secret into this report.",
+        "owner": "Developer",
+        "sourceIds": ["flow", "composio"]
+      }
+    ],
+    "unknowns": [
+      "Customer organization access policies need account-specific checking.",
+      "The full OAuth exchange has not been executed for this guide."
+    ],
+    "tested": "Official documentation reviewed. Custom registration entry redirected to sign-in; no custom app was registered. Separately, a Composio-managed GitHub OAuth connection completed after owner consent: server status ACTIVE and read-only GET /user returned HTTP 200 on 29 October 2026. No provider approval is claimed.",
+    "generated": false,
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "slack",
+    "name": "Slack",
+    "domain": "slack.com",
+    "description": "Workspace setup is quick. Distribution needs a separate decision.",
+    "category": "Communication",
+    "color": "#663b6c",
+    "monogram": "S",
+    "verdict": "Separate an internal workspace app, a customer pilot and Marketplace distribution. Check eligibility before preparing a submission.",
+    "effort": "1–3 hours",
+    "wait": "Marketplace review duration not established",
+    "estimateBasis": "Planning estimate for configuration and preparation; excludes building the app, pilot usage and review.",
+    "managed": "Available",
+    "scopes": [
+      {
+        "name": "chat:write",
+        "purpose": "Post messages where the app has the necessary access.",
+        "classification": "Bot scope; validate against your endpoints",
+        "sourceIds": ["oauth"]
+      }
+    ],
+    "steps": [
+      {
+        "id": "route",
+        "title": "Choose the distribution path",
+        "detail": "Choose a single-workspace app, a limited pilot, or broader distribution. Composio-managed OAuth may cover your prototype; confirm the capabilities and customer policies.",
+        "owner": "Developer",
+        "done": "Audience and OAuth identity are documented.",
+        "sourceIds": ["distribution", "composio"],
+        "condition": "Always"
+      },
+      {
+        "id": "register",
+        "title": "Create a Slack app",
+        "detail": "Open the Slack app dashboard and associate the app with a development workspace. Confirm that your account may create and install apps.",
+        "owner": "Developer",
+        "done": "The app exists in an authorized development workspace.",
+        "sourceIds": ["distribution"],
+        "condition": "Always"
+      },
+      {
+        "id": "permissions",
+        "title": "Configure permissions and redirects",
+        "detail": "Add only the needed bot/user scopes and configure the exact redirect URI. Wider distribution requires an OAuth installation flow and HTTPS URLs.",
+        "owner": "Developer",
+        "done": "Permissions map to features and the redirect configuration is saved.",
+        "sourceIds": ["oauth", "distribution"],
+        "condition": "Always"
+      },
+      {
+        "id": "test",
+        "title": "Install and test in your workspace",
+        "detail": "Install the app, complete the required authorization and run a harmless test. Respect workspace installation policies.",
+        "owner": "Developer",
+        "done": "A test interaction works in the intended workspace.",
+        "sourceIds": ["distribution", "oauth"],
+        "condition": "Always"
+      },
+      {
+        "id": "review",
+        "title": "Check Marketplace eligibility before submission",
+        "detail": "Review current eligibility, including at least 10 active workspaces and 10 weekly active users, and meaningful in-Slack functionality. A product offering only an MCP server without meaningful Slack functionality is listed as unsuitable.",
+        "owner": "Developer",
+        "done": "Eligibility and preparation gaps are recorded; submission is a separate action.",
+        "sourceIds": ["marketplace"],
+        "condition": "For Marketplace distribution"
+      }
+    ],
+    "sources": [
+      {
+        "id": "composio",
+        "title": "Composio · managed vs custom auth",
+        "url": "https://docs.composio.dev/docs/authentication/custom-app-vs-managed-app",
+        "excerpt": "Composio manages OAuth apps for GitHub, Gmail and Slack. Custom credentials support your own consent identity and scope needs.",
+        "checkedAt": "2026-10-29"
+      },
+      {
+        "id": "distribution",
+        "title": "Slack · app lifecycle and distribution",
+        "url": "https://docs.slack.dev/app-management/distribution/",
+        "excerpt": "Single-workspace apps, unlisted pilots and Marketplace distribution have different installation paths. Workspaces may require admin approval.",
+        "checkedAt": "2026-10-29"
+      },
+      {
+        "id": "marketplace",
+        "title": "Slack · Marketplace requirements",
+        "url": "https://docs.slack.dev/slack-marketplace/slack-marketplace-app-guidelines-and-requirements/",
+        "excerpt": "Marketplace suitability includes usage and functional requirements. MCP-only offerings without meaningful functionality inside Slack are listed as unsuitable.",
+        "checkedAt": "2026-10-29"
+      },
+      {
+        "id": "oauth",
+        "title": "Slack · installing with OAuth",
+        "url": "https://docs.slack.dev/authentication/installing-with-oauth/",
+        "excerpt": "Configure scopes and redirects for an OAuth installation flow; keep bot and user permissions distinct.",
+        "checkedAt": "2026-10-29"
+      }
+    ],
+    "blockers": [
+      {
+        "title": "Marketplace eligibility comes before submission",
+        "detail": "A working OAuth flow alone does not establish suitability for Marketplace listing.",
+        "action": "Check intended functionality and current active-usage criteria before investing in submission materials.",
+        "owner": "Developer",
+        "sourceIds": ["marketplace"]
+      },
+      {
+        "title": "Workspace administrator approval",
+        "detail": "Some workspaces restrict app installation or allow only Marketplace-listed apps.",
+        "action": "Ask a workspace administrator to confirm the installation policy and approve the required access.",
+        "owner": "Admin",
+        "sourceIds": ["distribution"]
+      }
+    ],
+    "unknowns": [
+      "Your target workspace policy has not been inspected.",
+      "Marketplace acceptance and elapsed review time cannot be predicted."
+    ],
+    "tested": "Official distribution and Marketplace guidance reviewed. Creation dialog and name/workspace form inspected; blocked by workspace sign-in. No app created or installed.",
+    "generated": false,
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "gmail",
+    "name": "Gmail",
+    "domain": "developers.google.com",
+    "description": "The permissions you choose can change the entire approval path.",
+    "category": "Email & productivity",
+    "color": "#d55747",
+    "monogram": "M",
+    "verdict": "Inbox-reading access uses restricted scopes. For external production use, investigate verification and the data-handling assessment requirements early.",
+    "effort": "2–4 hours",
+    "wait": "Verification and assessment timing varies",
+    "estimateBasis": "Planning estimate for basic configuration and collecting requirements; excludes security remediation, assessment and provider review.",
+    "managed": "Available",
+    "scopes": [
+      {
+        "name": "https://www.googleapis.com/auth/gmail.send",
+        "purpose": "Send messages on behalf of the user.",
+        "classification": "Sensitive",
+        "sourceIds": ["scopes"]
+      },
+      {
+        "name": "https://www.googleapis.com/auth/gmail.readonly",
+        "purpose": "Read email messages and settings.",
+        "classification": "Restricted",
+        "sourceIds": ["scopes"]
+      }
+    ],
+    "steps": [
+      {
+        "id": "route",
+        "title": "Choose managed auth or your own project",
+        "detail": "Check Composio-managed OAuth scope coverage. If using your own identity, choose the exact capabilities, intended audience and data handling before registering credentials.",
+        "owner": "Developer",
+        "done": "OAuth identity, audience and features are explicit.",
+        "sourceIds": ["composio", "scopes"],
+        "condition": "Always"
+      },
+      {
+        "id": "prepare",
+        "title": "Prepare your app identity and public pages",
+        "detail": "Prepare your application homepage, support details and required privacy disclosures. For applicable verification, establish domain ownership. Public pages must describe the real product and its actual data practices.",
+        "owner": "Developer",
+        "done": "Required public URLs and domain-verification responsibilities are identified.",
+        "sourceIds": ["verification"],
+        "condition": "Always"
+      },
+      {
+        "id": "register",
+        "title": "Configure the project and OAuth client",
+        "detail": "Use the Google Cloud Console to enable the relevant API, configure branding/audience/data access and register the web client. Use the exact redirect URI supplied by your integration.",
+        "owner": "Developer",
+        "done": "The project, client and redirect are configured; secrets stay in the provider or secret manager.",
+        "sourceIds": ["policy", "composio"],
+        "condition": "Always"
+      },
+      {
+        "id": "permissions",
+        "title": "Justify the minimum scopes",
+        "detail": "Send-only uses gmail.send, a sensitive scope. Inbox reading uses gmail.readonly, a restricted scope. Keep the feature, endpoint and scope mapping together.",
+        "owner": "Agent",
+        "done": "Every scope has a genuine feature justification.",
+        "sourceIds": ["scopes"],
+        "condition": "Always"
+      },
+      {
+        "id": "test",
+        "title": "Test with an eligible account",
+        "detail": "Follow the development/testing rules and complete one test connection. Testing can have user and token-lifetime limitations; it does not establish production verification.",
+        "owner": "Developer",
+        "done": "A permitted test account authorizes and the intended harmless operation succeeds.",
+        "sourceIds": ["verification"],
+        "condition": "Always"
+      },
+      {
+        "id": "assessment",
+        "title": "Assess restricted-data handling",
+        "detail": "Determine whether restricted data passes through or is stored on your servers. Review security-assessment applicability and exceptions; do not assume an assessment is unnecessary.",
+        "owner": "Developer",
+        "done": "The applicable assessment path or unresolved question is documented.",
+        "sourceIds": ["scopes", "verification"],
+        "condition": "When requesting restricted scopes"
+      },
+      {
+        "id": "review",
+        "title": "Prepare the applicable verification submission",
+        "detail": "Review exceptions first. For applicable external production access, collect accurate branding, ownership, scope justifications and demonstration materials. Google makes the verification decision.",
+        "owner": "Developer",
+        "done": "Required materials are prepared; actual submission and provider outcome are recorded separately.",
+        "sourceIds": ["verification", "policy"],
+        "condition": "When verification applies"
+      }
+    ],
+    "sources": [
+      {
+        "id": "composio",
+        "title": "Composio · managed vs custom auth",
+        "url": "https://docs.composio.dev/docs/authentication/custom-app-vs-managed-app",
+        "excerpt": "Composio manages OAuth apps for GitHub, Gmail and Slack. Custom credentials support your own consent identity and scope needs.",
+        "checkedAt": "2026-10-29"
+      },
+      {
+        "id": "scopes",
+        "title": "Google · Gmail API scopes",
+        "url": "https://developers.google.com/workspace/gmail/api/auth/scopes",
+        "excerpt": "gmail.send is sensitive; gmail.readonly is restricted. Server storage or transmission of restricted-scope data introduces assessment requirements.",
+        "checkedAt": "2026-10-29"
+      },
+      {
+        "id": "verification",
+        "title": "Google · restricted scope verification",
+        "url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification",
+        "excerpt": "Verification preparation includes application identity, domain ownership and public policy information. Exceptions and development/testing limitations are documented separately.",
+        "checkedAt": "2026-10-29"
+      },
+      {
+        "id": "policy",
+        "title": "Google · OAuth production policies",
+        "url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/policy-compliance",
+        "excerpt": "Production readiness includes accurate identity, minimal scopes and applicable sensitive/restricted-scope verification.",
+        "checkedAt": "2026-10-29"
+      }
+    ],
+    "blockers": [
+      {
+        "title": "Restricted-data assessment",
+        "detail": "Data handling affects assessment requirements. A working test connection does not remove production obligations.",
+        "action": "Document the data flow and check the applicable restricted-scope assessment requirements and exceptions.",
+        "owner": "Developer",
+        "sourceIds": ["scopes", "verification"]
+      },
+      {
+        "title": "Public identity and ownership are incomplete",
+        "detail": "Verification preparation includes public app information and applicable domain ownership checks.",
+        "action": "Prepare accurate public pages, then confirm ownership in the provider console.",
+        "owner": "Developer",
+        "sourceIds": ["verification"]
+      }
+    ],
+    "unknowns": [
+      "The developer’s data flow and exception eligibility need confirmation.",
+      "No verification decision, assessment cost or review duration has been established."
+    ],
+    "tested": "Official scope classifications and production-readiness requirements reviewed. No project, OAuth exchange or approval submitted.",
+    "generated": false,
+    "createdAt": "2026-10-29"
+  }
+]

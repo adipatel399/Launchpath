@@ -1,0 +1,86 @@
+{
+  "github.com": {
+    "consoleUrl": "https://github.com/settings/applications/new",
+    "policyLinkRequired": false,
+    "managedStepIds": ["route", "test"],
+    "adapter": {
+      "slug": "github",
+      "scope": "read:user",
+      "purpose": "Read the consenting account\u2019s GitHub profile only."
+    }
+  },
+  "slack.com": {
+    "consoleUrl": "https://api.slack.com/apps?new_app=1",
+    "managedStepIds": ["route", "test"],
+    "manifestTemplate": "slack",
+    "adapter": {
+      "slug": "slack",
+      "scope": "chat:write",
+      "purpose": "Post Slack messages for the reference message-posting integration."
+    },
+    "rules": [
+      {
+        "when": {
+          "audience": "internal"
+        },
+        "verdict": "Start in one workspace. Check its app-installation policy before configuring wider distribution.",
+        "gate": "Workspace installation permission",
+        "gateDetail": "A workspace administrator may restrict installation. Confirm permission before preparing wider distribution.",
+        "excludeStepIds": ["review"]
+      }
+    ]
+  },
+  "developers.google.com": {
+    "consoleUrl": "https://console.cloud.google.com/auth/overview",
+    "managedStepIds": ["route", "test"],
+    "adapter": {
+      "slug": "gmail",
+      "scope": "https://www.googleapis.com/auth/gmail.readonly",
+      "purpose": "Read Gmail messages for the inbox-reading scenario."
+    },
+    "capabilities": [
+      {
+        "value": "read",
+        "label": "Read inbox"
+      },
+      {
+        "value": "send",
+        "label": "Send email only"
+      }
+    ],
+    "adapterOverrides": {
+      "send": {
+        "scope": "https://www.googleapis.com/auth/gmail.send",
+        "purpose": "Send Gmail messages for the send-only scenario. This flow does not request inbox-reading access."
+      }
+    },
+    "rules": [
+      {
+        "when": {
+          "capability": "read"
+        },
+        "verdict": "Inbox reading uses a restricted scope. Server handling can add a security-assessment requirement.",
+        "gate": "Restricted-data assessment",
+        "scopeSuffix": "gmail.readonly"
+      },
+      {
+        "when": {
+          "capability": "send"
+        },
+        "verdict": "Send-only access uses a sensitive scope. Prepare the applicable verification for external production use.",
+        "gate": "Sensitive-scope verification",
+        "gateDetail": "Confirm applicable sensitive-scope verification and the public app information required for your audience.",
+        "scopeSuffix": "gmail.send",
+        "excludeStepIds": ["assessment"],
+        "excludeBlockerTitles": ["Restricted-data assessment"]
+      },
+      {
+        "when": {
+          "audience": "internal"
+        },
+        "verdict": "Confirm internal-audience eligibility in your Google Workspace organization. Internal and testing exceptions have specific conditions.",
+        "gate": "Confirm audience eligibility"
+      }
+    ]
+  }
+}
